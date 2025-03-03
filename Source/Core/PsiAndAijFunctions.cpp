@@ -67,6 +67,18 @@ Real PsiAndAijFunctions::compute_bowenyork_psi(const RealVect &loc)
     // the Bowen York params
     Real m1 = m_psi_and_Aij_params.bh1_bare_mass;
     Real m2 = m_psi_and_Aij_params.bh2_bare_mass;
+    RealVect J1 = m_psi_and_Aij_params.bh1_spin;
+    RealVect J2 = m_psi_and_Aij_params.bh2_spin;
+
+    Real J1_squared = 0.0;
+    Real J2_squared = 0.0;
+    FOR1(i)
+    {
+        J1_squared += J1[i] * J1[i];
+        J2_squared += J2[i] * J2[i];
+    }
+    Real a1_squared = J1_squared / m1 / m1;
+    Real a2_squared = J2_squared / m2 / m2;
 
     // set the BH values - location
     RealVect loc_bh1;
@@ -77,7 +89,10 @@ Real PsiAndAijFunctions::compute_bowenyork_psi(const RealVect &loc)
     Real rbh2;
     get_bh_coords(rbh2, loc_bh2, loc, m_psi_and_Aij_params.bh2_offset);
 
-    return 0.5 * (m1 / rbh1 + m2 / rbh2);
+    // equation (22) in arXiv:gr-qc/0612001
+
+    return 0.5 * (sqrt(m1 * m1 - a1_squared) / rbh1 +
+                  sqrt(m2 * m2 - a2_squared) / rbh2);
 }
 
 // Set Aij Bowen York data

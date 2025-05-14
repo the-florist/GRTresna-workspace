@@ -11,12 +11,12 @@
 # input_filename = Outputs/SourceData_chk000001.3d.hdf5
 
 # Where to put the final hdf5 file
-output_path = Outputs/
+output_path = /nfs/st01/hpc-gr-epss/eaf49/Tresna-data/
 output_filename = InitialDataFinal.3d.hdf5
 
 # Path for processor outputs and verbosity
-# pout_path = pout/
-# verbosity = 1
+pout_path = /nfs/st01/hpc-gr-epss/eaf49/Tresna-data/pout/
+verbosity = 1
 
 # Frequency of writing diagnostic files at non linear iterations
 # Set write_diagnostics to 0 to turn off

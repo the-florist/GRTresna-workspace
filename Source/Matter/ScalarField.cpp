@@ -16,7 +16,7 @@
 #include "REAL.H"
 #include "RealVect.H"
 #include "Tensor.hpp"
-#include "RandomSF.hpp"
+#include "RandomScalarField.hpp"
 
 void ScalarField::initialise_matter_vars(LevelData<FArrayBox> &a_multigrid_vars,
                                          const RealVect &a_dx) const
@@ -32,8 +32,13 @@ void ScalarField::initialise_matter_vars(LevelData<FArrayBox> &a_multigrid_vars,
         // Iterate over the box and set non zero comps
         Box ghosted_box = multigrid_vars_box.box();
 
-        RandomScalarField random_field_generator;
-        random_field_generator.set_random_scalar_field(multigrid_vars_box, ghosted_box);
+	std::cout << "Beginning Random Field class...\n";
+
+        RandomScalarField random_field_generator(m_matter_params.scalar_mass);
+        random_field_generator.set_random_scalar_field(multigrid_vars_box, ghosted_box, a_dx, center);
+        
+	//MayDay::Error("End of random field class reached.\n");
+	
         /*BoxIterator bit(ghosted_box);
         for (bit.begin(); bit.ok(); ++bit)
         {

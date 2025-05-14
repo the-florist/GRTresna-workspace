@@ -83,9 +83,9 @@ class RandomScalarField
                 for(int s=0; s<2; s++) 
                 {
                     phi_k[0][offset][s] = std::sqrt(-2. * log(random_draws[s][offset]) 
-                                            / (2. * std::sqrt(std::pow(kmag, 2.) + std::pow(m_params.scalar_mass, 2.))));
+                                            / (2. * std::sqrt(std::pow(kmag, 2.) + std::pow(m_matter_params.scalar_mass, 2.))));
                     phi_k[1][offset][s] = std::sqrt(-2. * log(random_draws[s][offset]) 
-                                            *  std::sqrt(std::pow(kmag, 2.) + std::pow(m_params.scalar_mass, 2.))/2.);
+                                            *  std::sqrt(std::pow(kmag, 2.) + std::pow(m_matter_params.scalar_mass, 2.))/2.);
                 }
                 phi_k[0][offset][0] *= cos(2. * M_PI * random_draws[2][offset]);
                 phi_k[0][offset][1] *= sin(2. * M_PI * random_draws[3][offset]);
@@ -100,6 +100,12 @@ class RandomScalarField
             // Apply Hermitian symmetry conditions
             for(int i=0; i<N; i++) for(int j=0; j<N; j++) for(int k=0; k<=N/2; k++)
             {
+                int offset = k + (N/2+1)*(j + N*i);
+
+                // Put the 0 mode in the right spot in memory
+                int I = (i < N/2) ? i : N-i;
+                int J = (j < N/2) ? j : N-j;
+
                 // Nyquist points
                 if ((i == 0 || i == N/2) && (j == 0 || j == N/2) && (k == 0 || k == N/2))
                 {

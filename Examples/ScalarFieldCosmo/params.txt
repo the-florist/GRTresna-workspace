@@ -11,7 +11,7 @@
 # input_filename = Outputs/SourceData_chk000001.3d.hdf5
 
 # Where to put the final hdf5 file
-output_path = Outputs/
+output_path = /nfs/st01/hpc-gr-epss/eaf49/Tresna-data/
 output_filename = InitialDataFinal.3d.hdf5
 
 # Path for processor outputs and verbosity
@@ -32,7 +32,7 @@ error_filename = Ham_and_Mom_errors
 
 # 'N' is the number of subdivisions in each direction of a cubic box
 # 'L' is the length of the longest side of the box, dx_coarsest = L/N
-N = 64 64 64
+N = 32 32 32
 L = 128
 
 # Maximum number of times you can regrid above coarsest level

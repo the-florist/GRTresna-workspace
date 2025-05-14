@@ -32,25 +32,27 @@ void ScalarField::initialise_matter_vars(LevelData<FArrayBox> &a_multigrid_vars,
         // Iterate over the box and set non zero comps
         Box ghosted_box = multigrid_vars_box.box();
 
-	std::cout << "Beginning Random Field class...\n";
-
-        RandomScalarField random_field_generator(m_matter_params.scalar_mass);
-        random_field_generator.set_random_scalar_field(multigrid_vars_box, ghosted_box, a_dx, center);
-        
-	//MayDay::Error("End of random field class reached.\n");
-	
-        /*BoxIterator bit(ghosted_box);
-        for (bit.begin(); bit.ok(); ++bit)
+        if (m_matter_params.use_random_field)
         {
+            RandomScalarField random_field_generator(m_matter_params, m_grid_params);
+            random_field_generator.set_random_scalar_field(multigrid_vars_box, ghosted_box);
+        }
+	
+        else
+        {
+            BoxIterator bit(ghosted_box);
+            for (bit.begin(); bit.ok(); ++bit)
+            {
 
-            // work out location on the grid
-            IntVect iv = bit();
-            RealVect loc;
-            Grids::get_loc(loc, iv, a_dx, center);
+                // work out location on the grid
+                IntVect iv = bit();
+                RealVect loc;
+                Grids::get_loc(loc, iv, a_dx, center);
 
-            multigrid_vars_box(iv, c_phi_0) = my_phi_function(loc);
-            multigrid_vars_box(iv, c_Pi_0) = my_Pi_function(loc);
-        }*/
+                multigrid_vars_box(iv, c_phi_0) = my_phi_function(loc);
+                multigrid_vars_box(iv, c_Pi_0) = my_Pi_function(loc);
+            }
+        }
     }
 }
 

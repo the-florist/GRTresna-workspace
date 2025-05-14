@@ -33,7 +33,7 @@ error_filename = Ham_and_Mom_errors
 # 'N' is the number of subdivisions in each direction of a cubic box
 # 'L' is the length of the longest side of the box, dx_coarsest = L/N
 N = 32 32 32
-L = 128
+L = 3000
 
 # Maximum number of times you can regrid above coarsest level
 max_level = 0 # There are (max_level+1) grids, so min is zero
@@ -94,6 +94,9 @@ dphi = 1e-1
 pi_0 = 1e-1
 dpi = 1e-1
 scalar_mass = 1e-1
+
+# Random scalar field parameters
+use_random_field = 1
 
 # Conformal factor psi
 # Related to cosmo scale factor a = psi^2

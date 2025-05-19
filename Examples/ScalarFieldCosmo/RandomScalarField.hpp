@@ -26,7 +26,7 @@ class RandomScalarField
                 }
             }
 
-            H0 = std::sqrt(8. * M_PI * G_Newton * (0.5 * std::pow(m_matter_params.Pi_0, 2.) + V0) / 3.);
+            H0 = std::sqrt(8. * M_PI * m_matter_params.G_Newton * (0.5 * std::pow(m_matter_params.pi_0, 2.) + V0) / 3.);
         }
 
         void set_random_scalar_field(FArrayBox &a_multigrid_vars_box, Box &a_ghosted_box)
@@ -93,7 +93,7 @@ class RandomScalarField
                     double kpr = kmag/H0;
                     std::vector<double> ms_args{atan2((cos(kpr) + kpr*sin(kpr)), (kpr*cos(kpr) - sin(kpr))), -atan2(cos(kpr), sin(kpr))};   
 
-                    for (l=0; l<2; l++)
+                    for (int l=0; l<2; l++)
                     {
                         if(s==0) { phi_k[l][offset][s] *= cos(ms_args[l]); }
                         else if(s==1) { phi_k[l][offset][s] *= sin(ms_args[l]); }
@@ -101,7 +101,7 @@ class RandomScalarField
 
                     // Set the stochastic phase
                     double rand_arg = 2. * M_PI * random_draws[2+s][offset];
-                    for (l=0; l<2; l++)
+                    for (int l=0; l<2; l++)
                     {
                         if(s==0) 
                         { 

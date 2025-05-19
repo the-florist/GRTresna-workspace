@@ -35,8 +35,10 @@ void ScalarField::initialise_matter_vars(LevelData<FArrayBox> &a_multigrid_vars,
         if (m_matter_params.use_random_field)
         {
             Real V0 = my_potential_function(m_matter_params.phi_0);
+            Real ddV0 = my_potential_deriv2(m_matter_params.phi_0);
+            
             RandomScalarField random_field_generator(m_matter_params, V0, domainLength, a_dx);
-            random_field_generator.set_random_scalar_field(multigrid_vars_box, ghosted_box);
+            random_field_generator.set_random_scalar_field(multigrid_vars_box, ghosted_box, ddV0);
         }
 	
         else

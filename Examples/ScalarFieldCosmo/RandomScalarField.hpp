@@ -29,7 +29,7 @@ class RandomScalarField
             H0 = std::sqrt(8. * M_PI * m_matter_params.G_Newton * (0.5 * std::pow(m_matter_params.pi_0, 2.) + V0) / 3.);
         }
 
-        void set_random_scalar_field(FArrayBox &a_multigrid_vars_box, Box &a_ghosted_box)
+        void set_random_scalar_field(FArrayBox &a_multigrid_vars_box, Box &a_ghosted_box, const Real meff)
         {   
             // Set domain parameters
             Real L = m_domainLength[0];
@@ -85,9 +85,9 @@ class RandomScalarField
                 {
                     // Set the modulus with a Rayleigh draw
                     phi_k[0][offset][s] = std::sqrt(-2. * log(random_draws[s][offset]) 
-                                            / (2. * std::sqrt(std::pow(kmag, 2.) + std::pow(m_matter_params.scalar_mass, 2.))));
+                                            / (2. * std::sqrt(std::pow(kmag, 2.) + std::pow(meff, 2.))));
                     phi_k[1][offset][s] = std::sqrt(-2. * log(random_draws[s][offset]) 
-                                            *  std::sqrt(std::pow(kmag, 2.) + std::pow(m_matter_params.scalar_mass, 2.))/2.);
+                                            *  std::sqrt(std::pow(kmag, 2.) + std::pow(meff, 2.))/2.);
 
                     // Set the "physical" phase
                     double kpr = kmag/H0;

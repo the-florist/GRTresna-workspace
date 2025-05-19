@@ -85,15 +85,21 @@ lo_boundary = 0 0 0
 # Initial Data parameters
 
 # Q: "Simple, change the gravitational constant of the Universe"
-G_Newton = 1.0 
+G_Newton = 1.0
 
 # Scalar field input params read in MatterParams.hpp
 # and used in MatterFunctions.hpp
-phi_0 = 1e-1
-dphi = 1e-1
-pi_0 = 1e-1
-dpi = 1e-1
-scalar_mass = 1e-1
+phi_0 = 0.0001
+# dphi = 1e-1
+# pi_0 = 1e-1
+# dpi = 1e-1
+scalar_mass = 1.93649e-9
+
+# parameters for small field model
+phi_s = 0.025
+phi_c = 0.023
+mu = 0.0238
+V0 = 1.15949e-22
 
 # Random scalar field parameters
 use_random_field = 1

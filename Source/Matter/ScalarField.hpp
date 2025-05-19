@@ -48,6 +48,10 @@ class ScalarField
 
     Real my_potential_function(const Real &phi_here) const;
 
+    Real my_potential_deriv1(const Real &phi_here) const;
+
+    Real my_potential_deriv2(const Real &phi_here) const;
+
     Real my_phi_function(const RealVect &locr) const;
 
     Real my_Pi_function(const RealVect &loc) const;

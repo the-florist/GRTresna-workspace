@@ -19,6 +19,7 @@ struct params_t
     Real pi_0;
     Real dpi;
     Real scalar_mass;
+    Real G_Newton;
 
     int use_random_field = 0;
     Real domain_length;
@@ -31,6 +32,7 @@ inline void read_params(GRParmParse &pp, params_t &matter_params)
     pp.get("pi_0", matter_params.pi_0);
     pp.get("dpi", matter_params.dpi);
     pp.get("scalar_mass", matter_params.scalar_mass);
+    pp.get("G_Newton", matter_params.G_Newton)
 
     pp.get("use_random_field", matter_params.use_random_field);
     pp.get("L", matter_params.domain_length);

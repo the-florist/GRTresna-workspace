@@ -90,9 +90,9 @@ G_Newton = 1.0
 # Scalar field input params read in MatterParams.hpp
 # and used in MatterFunctions.hpp
 phi_0 = 0.0001
-# dphi = 1e-1
-# pi_0 = 1e-1
-# dpi = 1e-1
+dphi = 1e-1
+pi_0 = 1e-1
+dpi = 1e-1
 scalar_mass = 1.93649e-9
 
 # parameters for small field model

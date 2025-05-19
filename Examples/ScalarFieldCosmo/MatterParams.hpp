@@ -33,9 +33,9 @@ struct params_t
 inline void read_params(GRParmParse &pp, params_t &matter_params)
 {
     pp.get("phi_0", matter_params.phi_0);
-    pp.load("dphi", matter_params.dphi);
-    pp.load("pi_0", matter_params.pi_0);
-    pp.load("dpi", matter_params.dpi);
+    pp.get("dphi", matter_params.dphi);
+    pp.get("pi_0", matter_params.pi_0);
+    pp.get("dpi", matter_params.dpi);
     pp.get("scalar_mass", matter_params.scalar_mass);
     pp.get("G_Newton", matter_params.G_Newton);
 

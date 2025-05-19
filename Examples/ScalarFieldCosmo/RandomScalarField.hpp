@@ -14,13 +14,13 @@
 class RandomScalarField
 {
     public:
-        RandomScalarField(MatterParams a_matter_params, Grids::params_t a_grid_params) 
-        : m_matter_params(a_matter_params), m_grid_params(a_grid_params)
+        RandomScalarField(MatterParams::params_t a_matter_params, const RealVect &a_domainLength, const RealVect &a_dx) 
+        : m_matter_params(a_matter_params), m_domainLength(a_domainLength), m_dx(a_dx)
         {
             // Error trap (all Ns must be equal for FFTW to work)
             for(int l=0; l<2; l++)
             { 
-                if(m_grid_params.nCells[l] != m_grid_params.nCells[l+1])
+                if(m_domainLength[l] != m_domainLength[l+1] || m_dx[l] != m_dx[l+1])
                 {
                     MayDay::Error("Grid resolution (N) must be cubic when RandomScalarField initial data is used");
                 }
@@ -30,8 +30,8 @@ class RandomScalarField
         void set_random_scalar_field(FArrayBox &a_multigrid_vars_box, Box &a_ghosted_box)
         {   
             // Set domain parameters
-            int N = m_grid_params.nCells[0];
-            double L = m_matter_params.domain_length;
+            Real L = m_domainLength[0];
+            int N = L/m_dx[0];
 
             // Set the random generator
 	        default_random_engine generator(142564253);
@@ -164,8 +164,9 @@ class RandomScalarField
         }
 
     protected:
-        MatterParams m_matter_params;
-        Grids::params_t m_grid_params;
+        MatterParams::params_t m_matter_params;
+        const RealVect m_domainLength;
+        const RealVect m_dx;
 
 };
 

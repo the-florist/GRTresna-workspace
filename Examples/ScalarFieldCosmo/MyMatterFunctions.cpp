@@ -10,7 +10,7 @@ Real ScalarField::my_potential_function(const Real &phi_here) const
     Real V;
 
     if(phi_here < 0) { V = m_matter_params.V0; }
-    else if (phi_here <= phi_c) 
+    else if (phi_here <= m_matter_params.phi_c) 
     { 
         V = m_matter_params.V0 * (1. - std::pow(phi_here/m_matter_params.mu, 4.)); 
     }
@@ -28,7 +28,7 @@ Real ScalarField::my_potential_deriv1(const Real &phi_here) const
     Real dV;
 
     if(phi_here < 0) { dV = 0.; }
-    else if (phi_here <= phi_c) 
+    else if (phi_here <= m_matter_params.phi_c) 
     { 
         dV = -4. * m_matter_params.V0 * std::pow(phi_here/m_matter_params.mu, 3.) / m_matter_params.mu; 
     }
@@ -46,7 +46,7 @@ Real ScalarField::my_potential_deriv2(const Real &phi_here) const
     Real ddV;
 
     if(phi_here < 0) { ddV = 0.; }
-    else if (phi_here <= phi_c) 
+    else if (phi_here <= m_matter_params.phi_c) 
     { 
         ddV = -12. * m_matter_params.V0 * std::pow(phi_here/m_matter_params.mu, 2.) / std::pow(m_matter_params.mu, 2.); 
     }

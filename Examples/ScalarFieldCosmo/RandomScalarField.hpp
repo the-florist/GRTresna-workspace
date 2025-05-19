@@ -14,8 +14,8 @@
 class RandomScalarField
 {
     public:
-        RandomScalarField(MatterParams::params_t a_matter_params, const RealVect &a_domainLength, const RealVect &a_dx) 
-        : m_matter_params(a_matter_params), m_domainLength(a_domainLength), m_dx(a_dx)
+        RandomScalarField(MatterParams::params_t a_matter_params, const Real a_V0, const RealVect &a_domainLength, const RealVect &a_dx) 
+        : m_matter_params(a_matter_params), V0(a_V0), m_domainLength(a_domainLength), m_dx(a_dx)
         {
             // Error trap (all Ns must be equal for FFTW to work)
             for(int l=0; l<2; l++)
@@ -25,6 +25,8 @@ class RandomScalarField
                     MayDay::Error("Grid resolution (N) must be cubic when RandomScalarField initial data is used");
                 }
             }
+
+            H0 = std::sqrt(8. * M_PI * G_Newton * (0.5 * std::pow(m_matter_params.Pi_0, 2.) + V0) / 3.);
         }
 
         void set_random_scalar_field(FArrayBox &a_multigrid_vars_box, Box &a_ghosted_box)
@@ -79,8 +81,43 @@ class RandomScalarField
                 // Find |k|
                 double kmag = (double)(pow((pow((double)I, 2.0) + pow((double)J, 2.0) + pow((double)k, 2.0))*4.*M_PI*M_PI/L/L, 0.5));
 
-                // Create random draw (Bunch-Davies approximation)
                 for(int s=0; s<2; s++) 
+                {
+                    // Set the modulus with a Rayleigh draw
+                    phi_k[0][offset][s] = std::sqrt(-2. * log(random_draws[s][offset]) 
+                                            / (2. * std::sqrt(std::pow(kmag, 2.) + std::pow(m_matter_params.scalar_mass, 2.))));
+                    phi_k[1][offset][s] = std::sqrt(-2. * log(random_draws[s][offset]) 
+                                            *  std::sqrt(std::pow(kmag, 2.) + std::pow(m_matter_params.scalar_mass, 2.))/2.);
+
+                    // Set the "physical" phase
+                    double kpr = kmag/H0;
+                    std::vector<double> ms_args{atan2((cos(kpr) + kpr*sin(kpr)), (kpr*cos(kpr) - sin(kpr))), -atan2(cos(kpr), sin(kpr))};   
+
+                    for (l=0; l<2; l++)
+                    {
+                        if(s==0) { phi_k[l][offset][s] *= cos(ms_args[l]); }
+                        else if(s==1) { phi_k[l][offset][s] *= sin(ms_args[l]); }
+                    }
+
+                    // Set the stochastic phase
+                    double rand_arg = 2. * M_PI * random_draws[2+s][offset];
+                    for (l=0; l<2; l++)
+                    {
+                        if(s==0) 
+                        { 
+                            double temp = phi_k[l][offset][s] * cos(rand_arg) - phi_k[l][offset][s-1] * sin(rand_arg);
+                            phi_k[l][offset][s] = temp;
+                        }
+                        else if(s==1) 
+                        { 
+                            double temp = phi_k[l][offset][s-1] * sin(rand_arg) + phi_k[l][offset][s] * cos(rand_arg);
+                            phi_k[l][offset][s] = temp;
+                        }
+                    }
+                }
+
+                // Create random draw (Bunch-Davies approximation, no MS phase)
+                /*for(int s=0; s<2; s++) 
                 {
                     phi_k[0][offset][s] = std::sqrt(-2. * log(random_draws[s][offset]) 
                                             / (2. * std::sqrt(std::pow(kmag, 2.) + std::pow(m_matter_params.scalar_mass, 2.))));
@@ -92,7 +129,7 @@ class RandomScalarField
 
                 //FIXME I think the velocity needs a different phase but idk what this is yet.
                 phi_k[1][offset][0] *= cos(2. * M_PI * random_draws[2][offset]);
-                phi_k[1][offset][1] *= sin(2. * M_PI * random_draws[3][offset]);
+                phi_k[1][offset][1] *= sin(2. * M_PI * random_draws[3][offset]);*/
             }
             
             free(random_draws);
@@ -165,8 +202,10 @@ class RandomScalarField
 
     protected:
         MatterParams::params_t m_matter_params;
+        const Real V0;
         const RealVect m_domainLength;
         const RealVect m_dx;
+        Real H0;
 
 };
 

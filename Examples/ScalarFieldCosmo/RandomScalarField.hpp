@@ -197,7 +197,7 @@ class RandomScalarField
                 a_multigrid_vars_box(iv, c_Pi_0) = phi_x[1][offset];
             }
 
-            fftw_free(phi_x);
+            free(phi_x);
         }
 
     protected:
